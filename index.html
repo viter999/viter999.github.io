@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="OI-VOL Terminal: a live open-interest and volume monitor for crypto perpetual futures across seven exchanges. Custom exchange data collectors, dashboards, alerts and datasets by Natthaphong (Shawn) Suebsri.">
+<meta property="og:title" content="OI-VOL Terminal">
+<meta property="og:description" content="Live open-interest and volume monitor for crypto perps. Data collectors, dashboards and alerts built to order.">
+<meta property="og:image" content="https://viter999.github.io/terminal.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<title>OI-VOL Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+/* Layout: lo-fi wireframe sheet. One narrow column, everything drawn with dashed strokes and corner ticks,
+   a "$" texture band behind the screenshot window, ASCII candles as the only illustration. Single dark look on purpose. */
+:root {
+  --ink: #0b0b0c;          /* page */
+  --paper: #f2f1ee;        /* primary strokes and text */
+  --dim: #9a9894;          /* secondary text */
+  --faint: #4a4946;        /* texture, tertiary strokes */
+  --panel: #121213;        /* raised surface */
+  --type: "Courier Prime", "Courier New", ui-monospace, monospace;
+  --small: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --dash: 1.5px dashed var(--paper);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--ink); }
+body {
+  background: var(--ink); color: var(--paper);
+  font-family: var(--type); font-size: 17px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+::selection { background: var(--paper); color: var(--ink); }
+.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
+.col { max-width: 700px; }
+h1, h2, h3 { font-family: var(--type); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: var(--paper); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+.muted { color: var(--dim); }
+
+/* status line, like a phone/terminal bar */
+.status { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.04em;
+  border-bottom: 1px dashed var(--faint); padding-bottom: 10px; }
+.status b { color: var(--paper); font-weight: 500; }
+.live::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+
+/* hero: card with an offset dashed "shadow" box */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; isolation: isolate; }
+.card { position: relative; border: 1.5px solid var(--paper); border-radius: 14px; background: var(--panel);
+  padding: 28px 30px 30px; display: flex; flex-direction: column; gap: 18px; margin: 0 14px 14px 0; }
+.card::after { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: var(--dash);
+  border-radius: 14px; z-index: -1; }
+.tag { align-self: flex-start; font-family: var(--small); font-size: 0.78rem; letter-spacing: 0.06em;
+  background: var(--paper); color: var(--ink); padding: 4px 12px; border-radius: 6px; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); line-height: 1.04; }
+.lede { font-size: 1.12rem; color: var(--dim); max-width: 58ch; }
+.ascii { font-family: var(--small); font-size: 14px; line-height: 1.15; color: var(--dim); margin: 0;
+  white-space: pre; user-select: none; }
+.ascii .up { color: var(--paper); }
+
+/* spec chips row */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { font-family: var(--small); font-size: 0.82rem; border: 1px dashed var(--dim); padding: 5px 12px; border-radius: 999px; }
+.chip b { font-weight: 500; color: var(--paper); }
+
+/* screenshot window over a $ texture band */
+figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.band { position: relative; padding: 28px; border-radius: 16px;
+  background-color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='15'%3E%3Ctext x='1' y='12' font-family='Courier New,monospace' font-size='12' fill='%234a4946'%3E$%3C/text%3E%3C/svg%3E"); }
+.window { border: 1.5px solid var(--paper); border-radius: 12px; overflow: hidden; background: #000; }
+.window .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 8px 14px; border-bottom: 1px dashed var(--faint); font-family: var(--small); font-size: 0.75rem; color: var(--dim); }
+.window img { display: block; width: 100%; height: auto; max-width: 100%; filter: grayscale(1) contrast(1.08); transition: filter 0.4s ease; }
+.window:hover img, .window:focus-within img { filter: none; }
+figcaption { font-family: var(--small); font-size: 0.8rem; color: var(--dim); }
+
+/* section headers */
+.head { display: flex; align-items: baseline; gap: 14px; }
+.head h2 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); }
+.head .rule { flex: 1; border-top: 1px dashed var(--faint); transform: translateY(-6px); }
+section { display: flex; flex-direction: column; gap: 22px; }
+
+/* spec list */
+.spec { display: flex; flex-direction: column; }
+.spec > div { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 18px; padding: 16px 0;
+  border-bottom: 1px dashed var(--faint); }
+.spec > div:first-child { border-top: 1px dashed var(--faint); }
+.spec dt { font-family: var(--small); font-size: 0.82rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; padding-top: 3px; }
+.spec dd { margin: 0; min-width: 0; }
+.flow { font-family: var(--small); font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+.flow span { border: 1px dashed var(--dim); padding: 2px 10px; border-radius: 4px; }
+
+/* service tiles with corner ticks */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.tile { position: relative; border: var(--dash); padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 10px; }
+.tile::before, .tile::after { content: "+"; position: absolute; font-family: var(--small); font-size: 14px; line-height: 1; color: var(--paper); }
+.tile::before { top: -8px; left: -6px; }
+.tile::after { bottom: -8px; right: -6px; }
+.tile h3 { font-size: 1.2rem; }
+.tile p { color: var(--dim); font-size: 0.98rem; }
+.tile .go { margin-top: auto; padding-top: 8px; font-family: var(--small); font-size: 0.82rem; letter-spacing: 0.08em; align-self: flex-end; }
+
+/* how I work */
+.note { border-left: 1.5px dashed var(--paper); padding: 4px 0 4px 20px; display: flex; flex-direction: column; gap: 12px; max-width: 64ch; }
+.stat { font-family: var(--small); font-size: 0.85rem; color: var(--dim); }
+.stat b { color: var(--paper); font-weight: 500; }
+
+/* contact */
+.contact { display: flex; flex-direction: column; gap: 18px; }
+.cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
+.addr { font-family: var(--small); font-size: 1rem; border: var(--dash); border-radius: 10px; padding: 14px 18px; user-select: all; min-width: 0; overflow-wrap: anywhere; }
+button { font-family: var(--type); font-size: 1.05rem; color: var(--paper); background: transparent; cursor: pointer;
+  border: var(--dash); border-radius: 10px; padding: 14px 20px; display: inline-flex; gap: 40px; justify-content: space-between; align-items: center; }
+button:hover { background: var(--paper); color: var(--ink); border-style: solid; }
+#copied { font-family: var(--small); font-size: 0.85rem; align-self: center; }
+
+footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); border-top: 1px dashed var(--faint); padding-top: 16px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  body { padding-block: 24px 48px; font-size: 16px; }
+  .wrap { gap: 56px; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero .ascii { display: none; }
+  .card { padding: 22px 20px 24px; }
+  .band { padding: 14px; }
+  .spec > div { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live::before { animation: none; }
+  .window img { transition: none; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="status" aria-label="Terminal status">
+    <span>OI&middot;VOL_TERMINAL</span>
+    <span><span class="live">LIVE</span> &nbsp;<b>190</b> mkts &nbsp;<b>7</b> venues &nbsp;15m buckets</span>
+  </div>
+
+  <header class="hero">
+    <div class="card">
+      <span class="tag">In daily use since Jul 2026</span>
+      <h1>OI&middot;VOL Terminal</h1>
+      <p class="lede">A live open-interest and volume monitor for crypto perpetual futures. It reads seven exchanges at once and says, in plain words, who is entering and who is leaving each market.</p>
+      <div class="chips">
+        <span class="chip"><b>7</b> exchanges</span>
+        <span class="chip"><b>190</b> markets tracked</span>
+        <span class="chip">built &amp; run <b>solo</b></span>
+      </div>
+    </div>
+<pre class="ascii" aria-hidden="true">           |
+      |   _|_          |
+     _|_ |   |        _|_
+    |<span class="up">###</span>||   |   |   |<span class="up">###</span>|
+    |<span class="up">###</span>||___|  _|_  |<span class="up">###</span>|
+    |___|  |   |<span class="up">###</span>| |<span class="up">###</span>|
+      |    |   |<span class="up">###</span>| |___|
+           |   |___|   |
+               |
+  ------------------------
+   OI  vs  VOL  /  15m</pre>
+  </header>
+
+  <figure>
+    <div class="band">
+      <div class="window" tabindex="0" aria-label="Screenshot of the running app. Hover or focus to show colour.">
+        <div class="bar" aria-hidden="true"><span>[ main screen ]</span><span>12h window</span></div>
+        <img src="terminal.jpg?v=2" width="1908" height="818" alt="The OI-VOL Terminal main screen: filters for time window, flow, exchange and sort order; a whole-market radar strip; a highlighted pair with a plain-language reading; and a ranked table of pairs with price change, open-interest change, flow such as buyers in or sellers out, and each pair's normal range.">
+      </div>
+    </div>
+    <figcaption>// captured from the running app, 29 Oct 2026. Hover for colour. Account and position panels are cropped out.</figcaption>
+  </figure>
+
+  <section class="col">
+    <div class="head"><h2>What it does</h2><span class="rule"></span></div>
+    <dl class="spec">
+      <div><dt>Data sources</dt><dd>Open interest and volume from Binance, Bybit, Bitget, MEXC and Gate.io; volume from Kraken and Coinbase. Streamed over WebSocket and REST, with keep-alive pings and automatic reconnects.</dd></div>
+      <div><dt>Plain-language flow</dt><dd><div class="flow"><span>buyers in</span><span>sellers in</span><span>sellers out</span><span>buyers out</span></div><span class="muted">Price change and open-interest change combined into one reading anyone can follow, with the dollar size of the move.</span></dd></div>
+      <div><dt>Whole-market radar</dt><dd>A strip across the top shows the biggest markets, including BTC and stock and commodity perpetuals, even when they are not in the main list.</dd></div>
+      <div><dt>Move vs its own history</dt><dd>Every move is compared with that coin's normal range, so a 2% move on a quiet large cap and on a wild small cap are not treated the same.</dd></div>
+      <div><dt>Alerts</dt><dd>Telegram alerts when a pair crosses a threshold, with cooldowns and a daily cap so the phone does not get spammed.</dd></div>
+      <div><dt>Storage</dt><dd>15-minute snapshots in SQLite, plus a separate archiver that copies finished buckets before the live database prunes them.</dd></div>
+      <div><dt>Self-reporting health</dt><dd>The screen says when a feed is stale, when the archive has gaps, and when the running build is behind its source code. A watchdog restarts it after a crash and a single-instance guard stops duplicates.</dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="head col"><h2>What I can build for you</h2><span class="rule"></span></div>
+    <div class="grid">
+      <div class="tile"><h3>Exchange data collector</h3><p>Live and historical open interest, volume, funding or trades from Binance, Bybit, Hyperliquid and others, stored in a clean database you own.</p><span class="go">ASK &gt;</span></div>
+      <div class="tile"><h3>Dashboard and alerts</h3><p>A screen like the one above for your own coin list and rules, with alerts to Telegram, LINE or email.</p><span class="go">ASK &gt;</span></div>
+      <div class="tile"><h3>Data-quality check</h3><p>I go through your existing pipeline and report missing hours, stale feeds, duplicate rows and mismatches between exchanges, with exact timestamps.</p><span class="go">ASK &gt;</span></div>
+      <div class="tile"><h3>Historical datasets</h3><p>Binance public-archive data downloaded, cleaned and joined, with delisted coins kept in so backtests are not flattered.</p><span class="go">ASK &gt;</span></div>
+    </div>
+  </section>
+
+  <section class="col">
+    <div class="head"><h2>How I work</h2><span class="rule"></span></div>
+    <div class="note">
+      <p>I test ideas before I trust them. I wrote down 38 trading tests in advance, ran each once, and published the results, including the ones that failed. Most short-term signals I measured were real but smaller than trading fees.</p>
+      <p>So the terminal informs and never decides. I build tools that show what is happening in the market. I don't sell trading signals or promise returns.</p>
+      <p class="stat">tests pre-registered <b>38</b> &nbsp;/&nbsp; results published <b>38</b> &nbsp;/&nbsp; signals sold <b>0</b></p>
+    </div>
+    <p class="muted">Research write-ups and null results: <a href="https://github.com/viter999/quant-market-research" rel="noopener" target="_blank">quant-market-research</a> and <a href="https://github.com/viter999/crypto-signal-null-results" rel="noopener" target="_blank">crypto-signal-null-results</a> on GitHub.</p>
+  </section>
+
+  <section class="col contact">
+    <div class="head"><h2>Get in touch</h2><span class="rule"></span></div>
+    <p>Tell me which exchanges, which data and what you want to see. I reply with a fixed-price quote and a delivery date. English or Thai.</p>
+    <div class="cta">
+      <span class="addr" id="email">viter999.shawn@gmail.com</span>
+      <button type="button" id="copy"><span>Copy email</span><span aria-hidden="true">&gt;</span></button>
+      <span id="copied" class="muted" aria-live="polite"></span>
+    </div>
+    <p class="muted">GitHub: <a href="https://github.com/viter999" rel="noopener" target="_blank">github.com/viter999</a></p>
+  </section>
+
+  <footer>
+    <span>Natthaphong (Shawn) Suebsri &middot; Thailand</span>
+    <span>Screenshot from the live app. Coin rows are market data, not recommendations.</span>
+  </footer>
+</div>
+
+<script>
+document.getElementById('copy').addEventListener('click', function () {
+  var t = document.getElementById('email').textContent;
+  var out = document.getElementById('copied');
+  function fallback() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById('email'));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    out.textContent = 'Selected, press Ctrl+C';
+  }
+  try {
+    navigator.clipboard.writeText(t).then(function () { out.textContent = 'Copied'; }, fallback);
+  } catch (e) { fallback(); }
+});
+</script>
+
+</body>
+</html>

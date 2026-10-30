@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Museum of Failure">
+<meta property="og:description" content="Every pre-registered crypto trading idea that died, with its cause of death.">
+<meta name="twitter:card" content="summary">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Museum of Failure</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Every pre-registered crypto trading idea that died, with its cause of death.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+/* Layout: same lo-fi wireframe sheet as viter999.github.io. One column, dashed strokes, corner ticks,
+   ASCII headstone as the only illustration. Exhibits hang as wall labels in three halls. Single dark look on purpose. */
+:root {
+  --ink: #0b0b0c;          /* page */
+  --paper: #f2f1ee;        /* primary strokes and text */
+  --dim: #9a9894;          /* secondary text */
+  --faint: #4a4946;        /* texture, tertiary strokes */
+  --panel: #121213;        /* raised surface */
+  --type: "Courier Prime", "Courier New", ui-monospace, monospace;
+  --small: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --dash: 1.5px dashed var(--paper);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--ink); }
+body {
+  margin: 0; background: var(--ink); color: var(--paper);
+  font-family: var(--type); font-size: 17px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+::selection { background: var(--paper); color: var(--ink); }
+.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
+.col { max-width: 700px; }
+h1, h2, h3 { font-family: var(--type); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: var(--paper); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+.status { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.04em;
+  border-bottom: 1px dashed var(--faint); padding-bottom: 10px; }
+.status b { color: var(--paper); font-weight: 500; }
+.open::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; isolation: isolate; }
+.card { position: relative; border: 1.5px solid var(--paper); border-radius: 14px; background: var(--panel);
+  padding: 28px 30px 30px; display: flex; flex-direction: column; gap: 18px; margin: 0 14px 14px 0; }
+.card::after { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: var(--dash); border-radius: 14px; z-index: -1; }
+.tag { align-self: flex-start; font-family: var(--small); font-size: 0.78rem; letter-spacing: 0.06em;
+  background: var(--paper); color: var(--ink); padding: 4px 12px; border-radius: 6px; }
+h1 { font-size: clamp(2.1rem, 5.6vw, 3.4rem); line-height: 1.04; }
+.lede { font-size: 1.12rem; color: var(--dim); max-width: 58ch; }
+.lede b { color: var(--paper); font-weight: 700; }
+.ascii { font-family: var(--small); font-size: 14px; line-height: 1.15; color: var(--dim); margin: 0; white-space: pre; user-select: none; }
+.ascii .up { color: var(--paper); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { font-family: var(--small); font-size: 0.82rem; border: 1px dashed var(--dim); padding: 5px 12px; border-radius: 999px; }
+.chip b { font-weight: 500; color: var(--paper); }
+
+.plan { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.plan a { display: flex; flex-direction: column; gap: 2px; text-decoration: none; border: 1px dashed var(--faint); border-radius: 10px; padding: 12px 16px; }
+.plan a:hover { border-color: var(--paper); }
+.plan .h { font-family: var(--small); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; }
+.plan .n { font-weight: 700; font-size: 1.05rem; }
+.plan .c { font-family: var(--small); font-size: 0.8rem; color: var(--dim); }
+
+section { display: flex; flex-direction: column; gap: 22px; }
+.head { display: flex; align-items: baseline; gap: 14px; }
+.head .hn { font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.06em; white-space: nowrap; }
+.head h2 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); }
+.head h3 { font-size: 1.3rem; }
+.head .rule { flex: 1; border-top: 1px dashed var(--faint); transform: translateY(-6px); }
+.sub { color: var(--dim); max-width: 64ch; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.tile { position: relative; border: var(--dash); padding: 20px 22px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tile::before, .tile::after { content: "+"; position: absolute; font-family: var(--small); font-size: 14px; line-height: 1; color: var(--paper); }
+.tile::before { top: -8px; left: -6px; }
+.tile::after { bottom: -8px; right: -6px; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-family: var(--small); font-size: 0.78rem; color: var(--dim); letter-spacing: 0.04em; }
+.meta .acc { color: var(--paper); }
+.verdict { margin-left: auto; font-family: var(--small); font-size: 0.76rem; font-weight: 500; letter-spacing: 0.1em;
+  background: var(--paper); color: var(--ink); padding: 2px 9px; border-radius: 4px; white-space: nowrap; }
+.tile h3 { font-size: 1.25rem; line-height: 1.2; }
+.medium { font-family: var(--small); font-size: 0.8rem; color: var(--dim); }
+.tile dl { margin: 2px 0 0; display: grid; gap: 2px; }
+.tile dt { font-family: var(--small); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-top: 8px; }
+.tile dd { margin: 0; font-size: 0.98rem; }
+.tile dd b { font-family: var(--small); font-weight: 500; background: var(--paper); color: var(--ink); padding: 0 4px; border-radius: 3px; font-variant-numeric: tabular-nums; }
+.after { color: var(--dim); font-size: 0.92rem; border-left: 1.5px dashed var(--paper); padding-left: 12px; }
+.go { margin-top: auto; padding-top: 6px; font-family: var(--small); font-size: 0.8rem; letter-spacing: 0.06em; align-self: flex-end; }
+.go.off { color: var(--faint); }
+
+.surv { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; isolation: isolate; }
+.tile.alive { border: 1.5px solid var(--paper); border-radius: 14px; background: var(--panel); margin: 0 14px 14px 0; }
+.tile.alive::before { content: none; }
+.tile.alive::after { content: ""; inset: 14px -14px -14px 14px; border: var(--dash); border-radius: 14px; z-index: -1; }
+.note { border-left: 1.5px dashed var(--paper); padding: 4px 0 4px 20px; display: flex; flex-direction: column; gap: 12px; max-width: 64ch; color: var(--dim); }
+.note b { color: var(--paper); }
+
+.spec { display: flex; flex-direction: column; margin: 0; }
+.spec > div { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 18px; padding: 12px 0; border-bottom: 1px dashed var(--faint); align-items: baseline; }
+.spec > div:first-child { border-top: 1px dashed var(--faint); }
+.spec dt { min-width: 0; }
+.spec dd { margin: 0; font-family: var(--small); font-size: 0.8rem; color: var(--dim); font-variant-numeric: tabular-nums; }
+.spec dd.v { color: var(--paper); letter-spacing: 0.08em; min-width: 8ch; text-align: right; }
+
+footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); border-top: 1px dashed var(--faint); padding-top: 16px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  body { padding-block: 24px 48px; font-size: 16px; }
+  .wrap { gap: 56px; }
+  .hero, .surv { grid-template-columns: minmax(0, 1fr); }
+  .hero .ascii { display: none; }
+  .card { padding: 22px 20px 24px; }
+  .grid, .plan { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .open::before { animation: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="status" aria-label="Museum status">
+    <span>MUSEUM_OF_FAILURE</span>
+    <span><span class="open">OPEN</span> &nbsp;<b>17</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
+  </div>
+
+  <header class="hero">
+    <div class="card">
+      <span class="tag">Permanent collection &middot; @TheQuantTape</span>
+      <h1>Welcome to the Museum of Failure</h1>
+      <p class="lede">Every exhibit is a market idea I believed in and then tested. The big ones had their <b>rules written down and frozen before I saw the data</b>, then got one honest look. Most of them died. This is where they are kept, with the cause of death on the label.</p>
+      <div class="chips">
+        <span class="chip"><b>17</b> exhibits</span>
+        <span class="chip"><b>1</b> survivor</span>
+        <span class="chip">admission <b>free</b></span>
+      </div>
+    </div>
+<pre class="ascii" aria-hidden="true">     ___________
+    /           \
+   /    R.I.P.   \
+  |               |
+  |   <span class="up">THE  EDGE</span>   |
+  |               |
+  |  "it looked   |
+  |   so good in  |
+  |   my head"    |
+  |               |
+ _|_______________|_
+------------------------
+   HERE LIES ANOTHER</pre>
+  </header>
+
+  <nav class="plan" aria-label="Floor plan">
+    <a href="#hall-1"><span class="h">Hall I</span><span class="n">Published autopsies</span><span class="c">8 exhibits, full reports public</span></a>
+    <a href="#hall-2"><span class="h">Hall II</span><span class="n">Recent deaths</span><span class="c">9 exhibits from the lab notebook</span></a>
+    <a href="#survivor"><span class="h">Hall III</span><span class="n">The survivor</span><span class="c">the one test that passed</span></a>
+  </nav>
+
+  <section id="hall-1">
+    <div class="head col"><span class="hn">HALL I</span><h2>Published autopsies</h2><span class="rule"></span></div>
+    <p class="sub">Pre-registered studies. Five have their frozen rules and file hashes in the public research repo; three have published write-ups.</p>
+    <div class="grid">
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.01</span><span>died 31 Aug 2026</span><span class="verdict">DEAD</span></div>
+  <h3>The Gap That Would Not Close</h3>
+  <p class="medium">Binance perps vs spot · 82,619 events</p>
+  <dl><dt>The idea</dt><dd>When a perp price breaks away from spot, it snaps back far enough to trade.</dd><dt>Rule set before the data</dt><dd>Gross move of at least 58 bps, the round-trip cost.</dd><dt>Cause of death</dt><dd>It moved <b>+3.78 bps</b>, about 15× too small. The sealed holdout, opened later, showed only <b>+1.23 bps</b>, with a confidence range touching zero.</dd></dl>
+  <p class="after">Its stopping rule closed the whole perp-microstructure direction family. I later reopened it once, for the liquidation-flush test now in storage.</p><a class="go" href="https://github.com/viter999/quant-market-research/tree/main/research/basis-dislocation" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.02</span><span>died 31 Aug 2026</span><span class="verdict">DEAD</span></div>
+  <h3>The Unwind That Ran Backwards</h3>
+  <p class="medium">Binance perps · funding settlements</p>
+  <dl><dt>The idea</dt><dd>After a funding payment, the side that paid unwinds, and you can trade against it.</dd><dt>Rule set before the data</dt><dd>Beat a 45 bps round-trip hurdle. Written down before the first data call.</dd><dt>Cause of death</dt><dd>Trading against the payer lost <b>−3.37 bps</b> per event. Price drifted <i>with</i> the funding sign, the opposite of the idea.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/blob/main/docs/experiments.md" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.03</span><span>first attempt, closed</span><span class="verdict">FAILED INTEGRITY</span></div>
+  <h3>The Ledger That Did Not Add Up</h3>
+  <p class="medium">Hyperliquid TWAP orders · 16,861 archive files, ~85 GB</p>
+  <dl><dt>The idea</dt><dd>Predict how a big TWAP order ends and how much more of it fills.</dd><dt>Rule set before the data</dt><dd>Eight data-integrity gates must pass before any model is fitted.</dd><dt>Cause of death</dt><dd>Only <b>94.2351%</b> of parent orders reconciled with their fills (953,381 of 1,011,705). Four of eight gates failed.</dd></dl>
+  <p class="after">No model was ever fitted. The attempt stays closed; a new version waits for fresh data.</p><a class="go" href="https://github.com/viter999/quant-market-research/blob/main/docs/experiments.md" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.04</span><span>died 20 Oct 2026</span><span class="verdict">DROP</span></div>
+  <h3>Kronos Guesses Tomorrow</h3>
+  <p class="medium">Kronos-small AI model · 30 Binance perps · 457 days</p>
+  <dl><dt>The idea</dt><dd>An AI price model can call the next 24h direction better than a coin flip.</dd><dt>Rule set before the data</dt><dd>Beat random after 0.10% fees, and show skill against BTC.</dd><dt>Cause of death</dt><dd>Hit rate <b>50.53%</b>. After fees it lost <b>−0.108% per day</b>, and 58% of random coin-flip runs did at least as well.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/kronos-24h-forecast" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.05</span><span>died 23 Oct 2026</span><span class="verdict">FAIL</span></div>
+  <h3>Winners Keep Winning</h3>
+  <p class="medium">Binance perps · 142 weeks, 2020–2022</p>
+  <dl><dt>The idea</dt><dd>Coins with the best 28-day return keep beating the worst ones next week.</dd><dt>Rule set before the data</dt><dd>Weekly profit above zero after costs, t above 1.645.</dd><dt>Cause of death</dt><dd>Net <b>−0.6 bps per week</b>. Costs (32.2 bps) ate the whole gross edge, and two weeks in 2021 carried everything.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/cross-coin-momentum" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.06</span><span>died 26 Oct 2026</span><span class="verdict">FAIL</span></div>
+  <h3>Two Exchanges, One Coin</h3>
+  <p class="medium">Hyperliquid vs Binance funding · 165 pairs</p>
+  <dl><dt>The idea</dt><dd>When the same coin pays very different funding on two exchanges, a hedged pair collects the gap.</dd><dt>Rule set before the data</dt><dd>Average pair profit above zero after 84 bps of costs, z of 3 or more.</dd><dt>Cause of death</dt><dd>Pairs lost <b>−63.8 bps</b> on average. It collected +19.8 bps of funding, about a quarter of its costs, because the gap closed within about a day.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/funding-gap-hl-binance" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.07</span><span>died 27 Oct 2026</span><span class="verdict">FAIL</span></div>
+  <h3>Follow the Trend</h3>
+  <p class="medium">Donchian 20/50/100 · top 30 Binance perps · 2022–2023</p>
+  <dl><dt>The idea</dt><dd>A classic breakout trend rule, long and short, sized by volatility, makes money.</dd><dt>Rule set before the data</dt><dd>Profit after costs and beat three simple baselines.</dd><dt>Cause of death</dt><dd>Lost <b>−18.53%</b> at the judged cost and still <b>−14.69%</b> at base cost. It beat a time-shifted copy of itself only 49% of the time.</dd></dl>
+  <p class="after">The trend family is closed until Oct 2027.</p><a class="go" href="https://github.com/viter999/quant-market-research/tree/main/ts-trend-study" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.08</span><span>died 20 Oct 2026</span><span class="verdict">NO</span></div>
+  <h3>The Liquidity That Came Back Slowly</h3>
+  <p class="medium">Uniswap v3 ETH/USDC · 48 price shocks</p>
+  <dl><dt>The idea</dt><dd>After a big ETH price swing, low-fee pools and L2 chains refill their liquidity 1.5× faster.</dd><dt>Rule set before the data</dt><dd>Median recovery at least 1.5× faster, p below 0.05.</dd><dt>Cause of death</dt><dd>Fee tier and Arbitrum: a 1.5× speed-up <b>ruled out</b>. Base: inconclusive.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/uniswap-liquidity-pilot" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+    </div>
+  </section>
+
+  <section id="hall-2">
+    <div class="head col"><span class="hn">HALL II</span><h2>Recent deaths</h2><span class="rule"></span></div>
+    <p class="sub">Smaller checks from the lab notebook. Some had the bar set first; others were exploratory looks. All of them came back empty.</p>
+    <div class="grid">
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.09</span><span>died 7 Jun 2026</span><span class="verdict">NO EDGE</span></div>
+  <h3>The Three-Day Miracle</h3>
+  <p class="medium">My own scanner alerts · Binance perps</p>
+  <dl><dt>The idea</dt><dd>My scanner's alerts can call direction.</dd><dt>Cause of death</dt><dd>On 4 June the cohort won <b>77.8%</b> of trades (n = 18). Three days later, at n = 28, the same cohort won <b>14.3%</b>.</dd></dl>
+  <p class="after">Every early positive faded toward zero as the data grew.</p><span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.10</span><span>died 26 Jul 2026</span><span class="verdict">NO EDGE</span></div>
+  <h3>The Fair Coin</h3>
+  <p class="medium">3× target vs 1× stop · 128,630 overlapping trials (~2,200 effective)</p>
+  <dl><dt>The idea</dt><dd>A 3-to-1 target and stop has a built-in edge.</dd><dt>Cause of death</dt><dd>Price hit the target first <b>24.72%</b> of the time. A random walk predicts exactly <b>25.00%</b>.</dd></dl>
+  <span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.11</span><span>died 2 Aug 2026</span><span class="verdict">ARTIFACT</span></div>
+  <h3>The Ghost Was a Stock Market</h3>
+  <p class="medium">Open interest + price · 118 symbols (82 crypto, 36 non-crypto)</p>
+  <dl><dt>The idea</dt><dd>Open interest building on a calm coin warns of a big move.</dd><dt>Cause of death</dt><dd><b>257 of 257</b> signals fired on tokenized stocks and metals, none on crypto. The likely cause: those markets have closed hours.</dd></dl>
+  <span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.12</span><span>died 27 Aug 2026</span><span class="verdict">NO SIGNAL</span></div>
+  <h3>Which Alert Should I Follow?</h3>
+  <p class="medium">OI-VOL alerts · 1h, 4h and 8h after</p>
+  <dl><dt>The idea</dt><dd>Alerts point the way price goes next.</dd><dt>Cause of death</dt><dd>Average move <b>+1.1 bps</b> after 1h, <b>−13.0</b> after 4h, <b>+12.0</b> after 8h. The sign flips.</dd></dl>
+  <p class="after">A later 4h effect turned out to be the prior move reverting, not the alert.</p><span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.13</span><span>died 27 Aug 2026</span><span class="verdict">NO</span></div>
+  <h3>Strength in Numbers</h3>
+  <p class="medium">OI-VOL alert clusters</p>
+  <dl><dt>The idea</dt><dd>Alerts where more clusters agree are better.</dd><dt>Cause of death</dt><dd><b>12</b> combinations tested, <b>zero</b> significant. Chance alone should give 0.6.</dd></dl>
+  <p class="after">More agreement isn't better, it's just rarer.</p><span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.14</span><span>died 30 Aug 2026</span><span class="verdict">UNTRADEABLE</span></div>
+  <h3>Real, Measurable, Unusable</h3>
+  <p class="medium">OI-VOL alerts · move size</p>
+  <dl><dt>The idea</dt><dd>Stronger alerts come before bigger moves.</dd><dt>Cause of death</dt><dd>The size effect is real (<b>p ≈ 2e-6</b>), but it carries no direction, so it can't say buy or sell.</dd></dl>
+  <p class="after">There is no options market on these coins to trade move size alone.</p><span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.15</span><span>died 30 Aug 2026</span><span class="verdict">BEATEN</span></div>
+  <h3>The Machine Learned Nothing</h3>
+  <p class="medium">Logistic models and trees · alert features</p>
+  <dl><dt>The idea</dt><dd>A model can pick which alerts to trade.</dd><dt>Cause of death</dt><dd>Scores (AUC) of <b>0.4965</b>, <b>0.5202</b> and <b>0.4987</b>, where 0.5 is a coin flip. Simply staying short did better.</dd></dl>
+  <span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.16</span><span>died 1 Sep 2026</span><span class="verdict">KILL</span></div>
+  <h3>Just Enough to Fool You</h3>
+  <p class="medium">Scanner short signal · trapped-long filter</p>
+  <dl><dt>The idea</dt><dd>The short signal works best where trapped longs pile up.</dd><dt>Rule set before the data</dt><dd>Must survive costs and survive dropping any single day.</dd><dt>Cause of death</dt><dd>After 0.424% costs it was ahead by only <b>+0.025pp</b>. Dropping any one of five days pushed it below zero.</dd></dl>
+  <span class="go off">AUTOPSY IN LAB NOTEBOOK</span>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.17</span><span>died 8 Sep 2026</span><span class="verdict">FALSE</span></div>
+  <h3>Hold Through the Dip</h3>
+  <p class="medium">My own trades that hit +100% ROE · n = 28</p>
+  <dl><dt>The idea</dt><dd>After +100% ROE, price pulls back less than half, then keeps going.</dd><dt>Cause of death</dt><dd>Median giveback from the peak: <b>96.8%</b>. 25 of 28 gave back more than half.</dd></dl>
+  <p class="after">Small sample, mostly my manual trades. Only trades that ended in profit could be replayed, so the real giveback is probably worse.</p><a class="go" href="https://x.com/TheQuantTape/status/2116282589879439752" target="_blank" rel="noopener">SEE THE POST ON X &gt;</a>
+</article>
+    </div>
+    <div class="col" style="margin-top:18px">
+      <div class="head"><h3>In storage</h3><span class="rule"></span></div>
+      <p class="sub" style="margin:8px 0 10px">Died recently. Their labels are still being written.</p>
+      <dl class="spec">
+        <div><dt>Buying the liquidation flush</dt><dd>29 Oct 2026</dd><dd class="v">KILL</dd></div>
+        <div><dt>Shorting brand-new listings for 3 days</dt><dd>29 Oct 2026</dd><dd class="v">KILL</dd></div>
+        <div><dt>Shorting the highest-funding coins</dt><dd>22 Oct 2026</dd><dd class="v">FAIL</dd></div>
+        <div><dt>Token unlocks</dt><dd>29 Oct 2026</dd><dd class="v">NO DATA</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="survivor">
+    <div class="head col"><span class="hn">HALL III</span><h2>The survivor</h2><span class="rule"></span></div>
+    <div class="surv">
+<article class="tile alive">
+  <div class="meta"><span class="acc">QT.2026.S1</span><span>confirmed 22 Oct 2026</span><span class="verdict">CONFIRMED</span></div>
+  <h3>How Big Next Week Moves</h3>
+  <p class="medium">Binance perps · 1,303 + 847 forecast dates</p>
+  <dl><dt>The idea</dt><dd>A 50/50 blend of the 10-day and 100-day average range predicts next week's move size best.</dd><dt>Rule set before the data</dt><dd>Lowest error, then confirmed on held-out data at z of 2.33 or more.</dd><dt>Result</dt><dd>Confirmed at <b>z 6.47</b>. It predicts how far prices move, not which way. That alone makes no money.</dd></dl>
+  <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/vol-forecast-atr-blend" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+      <div class="note">
+        <p>One test passed. It answers a smaller question: <b>how big will next week's moves be?</b> That helps size positions so each trade risks the same amount.</p>
+        <p>It says nothing about direction, so on its own it makes no money. It is here because a museum of failure should also show what survived the same rules.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <div class="head"><h2>Why keep a museum of failure?</h2><span class="rule"></span></div>
+    <div class="note">
+      <p>A failed test written down can't come back later dressed as a new idea. Publishing the deaths also shows what a fair test looks like: the rule comes first, the data gets one look, and the result stands.</p>
+      <p>Have an idea that deserves a fair trial? Reply on <a href="https://x.com/TheQuantTape" target="_blank" rel="noopener">X @TheQuantTape</a> or send a DM.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Full reports: <a href="https://github.com/viter999/quant-market-research" target="_blank" rel="noopener">github.com/viter999/quant-market-research</a></span>
+    <span>Not trading advice. Not a signal.</span>
+  </footer>
+</div>
+
+</body>
+</html>

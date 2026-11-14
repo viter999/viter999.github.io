@@ -54,6 +54,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline
 .live::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }
 
+/* shared site bar: same on all three pages */
+.status { align-items: baseline; gap: 8px 24px; }
+.nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.nav a { color: var(--dim); text-decoration: none; }
+.nav a:hover { color: var(--paper); text-decoration: underline; }
+.nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
+.nav a[aria-current="page"]::before { content: "> "; }
+.next { display: flex; justify-content: flex-end; }
+.next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
+  border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
+.next a:hover { background: var(--paper); color: var(--ink); border-style: solid; }
+.next small { font-family: var(--small); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--dim); }
+.next a:hover small { color: var(--ink); }
+
 /* hero: card with an offset dashed "shadow" box */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; isolation: isolate; }
 .card { position: relative; border: 1.5px solid var(--paper); border-radius: 14px; background: var(--panel);
@@ -149,7 +163,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
 
 <div class="wrap">
   <div class="status" aria-label="Terminal status">
-    <span>OI&middot;VOL_TERMINAL</span>
+    <nav class="nav" aria-label="Site"><a href="./" aria-current="page">OI&middot;VOL_TERMINAL</a><a href="museum/">MUSEUM_OF_FAILURE</a><a href="city/">NULL_CITY</a></nav>
     <span><span class="live">LIVE</span> &nbsp;<b>190</b> mkts &nbsp;<b>7</b> venues &nbsp;15m buckets</span>
   </div>
 
@@ -218,7 +232,6 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
       <p>Since November 2026 I also publish descriptive studies of how traders behave on Hyperliquid. Four so far, built on every liquidation over six months: 177,432 wallets. They describe what traders do. They are not signals either.</p>
       <p class="stat">tests pre-registered <b>38</b> &nbsp;/&nbsp; results published <b>38</b> &nbsp;/&nbsp; behaviour studies <b>4</b> &nbsp;/&nbsp; signals sold <b>0</b></p>
     </div>
-    <p class="muted">The whole record as one street: <a href="city/">Null City</a>. Why each idea died: <a href="museum/">Museum of Failure</a>.</p>
     <p class="muted">Research write-ups and null results: <a href="https://github.com/viter999/quant-market-research" rel="noopener" target="_blank">quant-market-research</a> and <a href="https://github.com/viter999/crypto-signal-null-results" rel="noopener" target="_blank">crypto-signal-null-results</a> on GitHub.</p>
   </section>
 
@@ -232,6 +245,8 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
     </div>
     <p class="muted">GitHub: <a href="https://github.com/viter999" rel="noopener" target="_blank">github.com/viter999</a></p>
   </section>
+
+  <div class="next"><a href="museum/"><span><small>NEXT ROOM</small><br>Museum of Failure</span><span aria-hidden="true">&gt;</span></a></div>
 
   <footer>
     <span>Natthaphong (Shawn) Suebsri &middot; Thailand</span>

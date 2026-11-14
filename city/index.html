@@ -38,7 +38,7 @@ body {
   padding-block: 36px 60px;
 }
 ::selection { background: var(--paper); color: var(--ink); }
-.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
 h1, h2, h3 { font-family: var(--type); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 p { margin: 0; }
 a { color: var(--paper); text-underline-offset: 3px; }
@@ -48,6 +48,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline
   font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.04em;
   border-bottom: 1px dashed var(--faint); padding-bottom: 10px; }
 .status b { color: var(--paper); font-weight: 500; }
+/* shared site bar: same on all three pages */
+.status { align-items: baseline; gap: 8px 24px; }
+.nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.nav a { color: var(--dim); text-decoration: none; }
+.nav a:hover { color: var(--paper); text-decoration: underline; }
+.nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
+.nav a[aria-current="page"]::before { content: "> "; }
+.next { display: flex; justify-content: flex-end; }
+.next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
+  border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
+.next a:hover { background: var(--paper); color: var(--ink); border-style: solid; }
+.next small { font-family: var(--small); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--dim); }
+.next a:hover small { color: var(--ink); }
 .live::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }
 
@@ -111,7 +124,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
 footer span { max-width: 62ch; }
 @media (max-width: 720px) {
   body { padding-block: 22px 44px; font-size: 16px; }
-  .wrap { gap: 40px; }
+  .wrap { gap: 56px; }
   .hero { grid-template-columns: minmax(0, 1fr); }
   .card { padding: 22px 20px 24px; }
   .band { padding: 12px; }
@@ -123,9 +136,8 @@ footer span { max-width: 62ch; }
 <body>
 <div class="wrap">
   <div class="status">
-    <span class="live"><b>NULL CITY</b></span>
-    <span><b id="st-n">15</b> studies / <b id="st-on">5</b> lit / <b id="st-off">8</b> dark / <b id="st-wip">2</b> building</span>
-    <span id="src">record as of <b>15 Nov 2026</b></span>
+    <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="../museum/">MUSEUM_OF_FAILURE</a><a href="./" aria-current="page">NULL_CITY</a></nav>
+    <span><span class="live" id="mode">LIVE</span> &nbsp;<b id="st-n">15</b> studies &nbsp;<b id="st-on">5</b> lit &nbsp;<b id="st-off">8</b> dark &nbsp;<b id="st-wip">2</b> building &nbsp;<span id="src">read <b>--:--</b></span></span>
   </div>
 
   <div class="hero">
@@ -170,9 +182,8 @@ footer span { max-width: 62ch; }
     <ul class="dir" id="dir"></ul>
   </section>
 
-  <footer>
-    <span>Why each idea died: <a href="../museum/">Museum of Failure</a> &middot; The tool behind the data: <a href="../">OI-VOL Terminal</a></span>
-  </footer>
+  <div class="next"><a href="../"><span><small>NEXT ROOM</small><br>OI-VOL Terminal</span><span aria-hidden="true">&gt;</span></a></div>
+
   <footer>
     <span>Nothing here is a validated trading edge. The one confirmed result is a volatility forecast: it predicts the size of moves, not their direction.</span>
     <a href="https://github.com/viter999/quant-market-research" target="_blank" rel="noopener">github.com/viter999/quant-market-research</a>
@@ -351,8 +362,8 @@ const stamp = (txt, b) => { const el = $('src'); el.textContent = txt + ' '; con
 fetch('https://raw.githubusercontent.com/viter999/quant-market-research/main/README.md', { cache: 'no-store' })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
   .then(md => { const live = parse(md); if (!live) throw new Error('table not found'); S = live; build();
-    const d = new Date(); stamp('live from GitHub, read', String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')); })
-  .catch(() => stamp('GitHub not reachable, showing the record of', '15 Nov 2026'));
+    const d = new Date(); stamp('read', String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')); })
+  .catch(() => { $('mode').textContent = 'SNAPSHOT'; stamp('GitHub not reachable, record of', '15 Nov 2026'); });
 </script>
 </body>
 </html>

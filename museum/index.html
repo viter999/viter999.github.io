@@ -49,6 +49,19 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
   font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.04em;
   border-bottom: 1px dashed var(--faint); padding-bottom: 10px; }
 .status b { color: var(--paper); font-weight: 500; }
+/* shared site bar: same on all three pages */
+.status { align-items: baseline; gap: 8px 24px; }
+.nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.nav a { color: var(--dim); text-decoration: none; }
+.nav a:hover { color: var(--paper); text-decoration: underline; }
+.nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
+.nav a[aria-current="page"]::before { content: "> "; }
+.next { display: flex; justify-content: flex-end; }
+.next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
+  border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
+.next a:hover { background: var(--paper); color: var(--ink); border-style: solid; }
+.next small { font-family: var(--small); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--dim); }
+.next a:hover small { color: var(--ink); }
 .open::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
 @keyframes blink { to { visibility: hidden; } }
 
@@ -134,7 +147,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
 
 <div class="wrap">
   <div class="status" aria-label="Museum status">
-    <span>MUSEUM_OF_FAILURE</span>
+    <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="./" aria-current="page">MUSEUM_OF_FAILURE</a><a href="../city/">NULL_CITY</a></nav>
     <span><span class="open">OPEN</span> &nbsp;<b>17</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
   </div>
 
@@ -338,9 +351,8 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
     </div>
   </section>
 
-  <footer>
-    <span>The whole record as one street: <a href="../city/">Null City</a> &middot; The tool behind the data: <a href="../">OI-VOL Terminal</a></span>
-  </footer>
+  <div class="next"><a href="../city/"><span><small>NEXT ROOM</small><br>Null City</span><span aria-hidden="true">&gt;</span></a></div>
+
   <footer>
     <span>Full reports: <a href="https://github.com/viter999/quant-market-research" target="_blank" rel="noopener">github.com/viter999/quant-market-research</a></span>
     <span>Not trading advice. Not a signal.</span>

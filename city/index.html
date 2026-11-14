@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Null City: every pre-registered study by TheQuantTape as one ASCII street at night. Lit if published, dark if killed, scaffolded if in progress.">
+<meta property="og:title" content="Null City">
+<meta property="og:description" content="My whole research record as one street at night. Most of it is dark.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Null City</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: same lo-fi wireframe sheet as viter999.github.io. One column, dashed strokes and corner ticks,
+   a "$" texture band behind a window that holds the skyline, and the skyline itself drawn in ASCII. Single dark look on purpose. */
+:root {
+  --ink: #0b0b0c;          /* page */
+  --paper: #f2f1ee;        /* primary strokes and text */
+  --dim: #9a9894;          /* secondary text */
+  --faint: #4a4946;        /* texture, tertiary strokes */
+  --panel: #121213;        /* raised surface */
+  --unlit: #76746f;        /* walls of dark buildings: readable, but clearly below lit ones */
+  --type: "Courier Prime", "Courier New", ui-monospace, monospace;
+  --small: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --dash: 1.5px dashed var(--paper);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--ink); -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+  background: var(--ink); color: var(--paper);
+  font-family: var(--type); font-size: 17px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 36px 60px;
+}
+::selection { background: var(--paper); color: var(--ink); }
+.wrap { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 52px; }
+h1, h2, h3 { font-family: var(--type); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: var(--paper); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
+.status { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-family: var(--small); font-size: 0.8rem; color: var(--dim); letter-spacing: 0.04em;
+  border-bottom: 1px dashed var(--faint); padding-bottom: 10px; }
+.status b { color: var(--paper); font-weight: 500; }
+.live::before { content: "\25CF "; color: var(--paper); animation: blink 1.6s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; isolation: isolate; }
+.card { position: relative; border: 1.5px solid var(--paper); border-radius: 14px; background: var(--panel);
+  padding: 28px 30px 30px; display: flex; flex-direction: column; gap: 16px; margin: 0 14px 14px 0; min-width: 0; }
+.card::after { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: var(--dash); border-radius: 14px; z-index: -1; }
+.tag { align-self: flex-start; font-family: var(--small); font-size: 0.78rem; letter-spacing: 0.06em;
+  background: var(--paper); color: var(--ink); padding: 4px 12px; border-radius: 6px; }
+h1 { font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1.02; }
+.lede { font-size: 1.08rem; color: var(--dim); max-width: 58ch; }
+.lede b { color: var(--paper); font-weight: 700; }
+.legend { font-family: var(--small); font-size: 14px; line-height: 1.7; color: var(--dim); margin: 0; white-space: pre; }
+.legend b { color: var(--paper); font-weight: 500; }
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.band { padding: 26px; border-radius: 16px; background-color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='15'%3E%3Ctext x='1' y='12' font-family='Courier New,monospace' font-size='12' fill='%234a4946'%3E$%3C/text%3E%3C/svg%3E"); }
+.window { border: 1.5px solid var(--paper); border-radius: 12px; overflow: hidden; background: #000; }
+.window .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 8px 14px; border-bottom: 1px dashed var(--faint); font-family: var(--small); font-size: 0.75rem; color: var(--dim); }
+.window .bar b { color: var(--paper); font-weight: 500; }
+.scroll { overflow-x: auto; padding: 14px 10px 10px; }
+#city { font-family: var(--small); font-size: clamp(11px, 1.62vw, 16.5px); line-height: 1.12; margin: 0 auto; white-space: pre;
+  width: max-content; cursor: pointer; user-select: none; color: var(--faint); }
+#city .u { color: var(--paper); }
+#city .d { color: var(--dim); }
+#city .k { color: var(--unlit); }
+#city .s { color: var(--paper); font-weight: 500; }
+figcaption { font-family: var(--small); font-size: 0.8rem; color: var(--dim); }
+
+.head { display: flex; align-items: baseline; gap: 14px; }
+.head h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); }
+.head .rule { flex: 1; border-top: 1px dashed var(--faint); transform: translateY(-6px); }
+section { display: flex; flex-direction: column; gap: 22px; }
+
+.tile { position: relative; border: var(--dash); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.tile::before, .tile::after { content: "+"; position: absolute; font-family: var(--small); font-size: 14px; line-height: 1; color: var(--paper); }
+.tile::before { top: -8px; left: -6px; }
+.tile::after { bottom: -8px; right: -6px; }
+.plate { font-family: var(--small); font-size: 0.8rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.tile h3 { font-size: clamp(1.4rem, 3.6vw, 1.9rem); line-height: 1.12; }
+.tile p { max-width: 66ch; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 6px; }
+button, a.go { font-family: var(--type); font-size: 1rem; color: var(--paper); background: transparent; cursor: pointer;
+  border: var(--dash); border-radius: 10px; padding: 10px 16px; text-decoration: none; display: inline-flex; gap: 14px; align-items: center; }
+button:hover, a.go:hover { background: var(--paper); color: var(--ink); border-style: solid; }
+
+.dir { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.dir button { width: 100%; text-align: left; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: baseline;
+  border: 1px dashed var(--faint); border-radius: 6px; padding: 9px 12px; font-size: 0.98rem; }
+.dir button:hover { background: transparent; color: var(--paper); border: 1px dashed var(--paper); }
+.dir button[aria-current="true"] { border: 1.5px solid var(--paper); background: var(--panel); }
+.dir .no, .dir small { font-family: var(--small); color: var(--dim); }
+.dir .no { font-size: 0.82rem; }
+.dir small { display: block; font-size: 0.72rem; letter-spacing: 0.06em; }
+.dir .nm { overflow-wrap: anywhere; min-width: 0; }
+
+footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); border-top: 1px dashed var(--faint); padding-top: 16px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+footer span { max-width: 62ch; }
+@media (max-width: 720px) {
+  body { padding-block: 22px 44px; font-size: 16px; }
+  .wrap { gap: 40px; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 22px 20px 24px; }
+  .band { padding: 12px; }
+  .scroll { padding: 12px 8px 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .live::before { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="status">
+    <span class="live"><b>NULL CITY</b></span>
+    <span><b id="st-n">15</b> studies / <b id="st-on">5</b> lit / <b id="st-off">8</b> dark / <b id="st-wip">2</b> building</span>
+    <span id="src">record as of <b>15 Nov 2026</b></span>
+  </div>
+
+  <div class="hero">
+    <div class="card">
+      <span class="tag">RESEARCH RECORD</span>
+      <h1>Null City</h1>
+      <p class="lede">Every study I registered before testing it, as one street at night. <b>Lights on</b> means it was published with a result worth reading. <b>Dark</b> means the idea was tested and killed. Most of the street is dark, and that is the honest state of the work.</p>
+    </div>
+<pre class="legend" aria-label="Legend"><b>|# #|</b>  lights on: published
+<b>--*--</b>  beacon: confirmed
+|. .|  dark: killed or null
++-+-+  under construction</pre>
+  </div>
+
+  <figure>
+    <div class="band">
+      <div class="window">
+        <div class="bar"><span>null-city.txt</span><span id="barsel"></span></div>
+        <div class="scroll"><pre id="city" role="img" aria-label="ASCII skyline of 15 studies. Use the street directory below to open each one."></pre></div>
+      </div>
+    </div>
+    <figcaption>Tap a building to open it. Heights are only for the skyline; the windows carry the meaning. The verdicts are read from the research repo on GitHub each time this page loads.</figcaption>
+  </figure>
+
+  <section aria-live="polite">
+    <div class="head"><h2>Open file</h2><span class="rule"></span></div>
+    <div class="tile">
+      <div class="plate" id="plate"></div>
+      <h3 id="name"></h3>
+      <p id="line"></p>
+      <div class="row">
+        <span class="tag" id="chip"></span>
+        <a class="go" id="link" target="_blank" rel="noopener">Read the write-up <span aria-hidden="true">-&gt;</span></a>
+        <button type="button" id="prev">&lt;- Previous</button>
+        <button type="button" id="next">Next -&gt;</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><h2>Street directory</h2><span class="rule"></span></div>
+    <ul class="dir" id="dir"></ul>
+  </section>
+
+  <footer>
+    <span>Why each idea died: <a href="../museum/">Museum of Failure</a> &middot; The tool behind the data: <a href="../">OI-VOL Terminal</a></span>
+  </footer>
+  <footer>
+    <span>Nothing here is a validated trading edge. The one confirmed result is a volatility forecast: it predicts the size of moves, not their direction.</span>
+    <a href="https://github.com/viter999/quant-market-research" target="_blank" rel="noopener">github.com/viter999/quant-market-research</a>
+  </footer>
+</div>
+
+<script>
+const REPO = 'https://github.com/viter999/quant-market-research/';
+const KIND = { lit: 'Lights on', confirmed: 'Beacon', dark: 'Dark', build: 'Under construction' };
+let S = [
+  { n: 'Perp-spot basis dislocation', k: 'dark', v: 'NULL', h: .50, roof: 'flat',
+    t: 'A small directional effect showed up in validation (+3.78 bps), shrank in the frozen holdout (+1.23 bps, interval touching zero), and stayed far under the 58 bps round-trip cost. The stopping rule fired and closed the whole family of ideas.', u: 'tree/main/research/basis-dislocation' },
+  { n: 'Post-settlement funding unwind', k: 'dark', v: 'NULL', h: .40, roof: 'tank',
+    t: 'The tradeable idea died on a 45 bps hurdle. Something is detectable at settlement, and it points the opposite way.', u: 'blob/main/docs/experiments.md' },
+  { n: 'Whale Lab E2 v1.1', k: 'dark', v: 'FAILED INTEGRITY', h: .62, roof: 'step',
+    t: 'Failed its data-integrity gates before any model was fitted. Recorded as failed; not repaired and not re-scored.', u: 'blob/main/docs/experiments.md' },
+  { n: 'Kronos 24h direction forecast', k: 'dark', v: 'DROP', h: .34, roof: 'flat',
+    t: 'An open-source candlestick model, tested on data from after its training period. No edge after fees, so it was dropped.', u: 'tree/main/kronos-24h-forecast' },
+  { n: 'Uniswap v3 liquidity recovery', k: 'dark', v: 'NO / NULL', h: .46, roof: 'antenna',
+    t: 'How fast in-range depth recovers after large ETH/USDC moves, by fee tier and chain. Fee tier: no. Arbitrum: no. Base: null.', u: 'tree/main/uniswap-liquidity-pilot' },
+  { n: 'Hyperliquid vs Binance funding gap', k: 'dark', v: 'FAIL', h: .56, roof: 'flat',
+    t: 'Pairs opened on a large funding gap lost 63.8 bps each on average after 84 bps of costs. The gap usually closed within about a day.', u: 'tree/main/funding-gap-hl-binance' },
+  { n: 'Cross-coin momentum', k: 'dark', v: 'FAIL', h: .44, roof: 'tank',
+    t: 'Long the strongest third of coins, short the weakest, weekly. Net -0.6 bps a week: costs of about 32 bps ate the whole +31.6 bps gross return.', u: 'tree/main/cross-coin-momentum' },
+  { n: 'Volatility forecast for sizing', k: 'confirmed', v: 'CONFIRMED', h: .88, roof: 'beacon',
+    t: 'A 50/50 blend of a short and a long ATR forecast next week\u2019s range better than either alone, and won again on held-out 2020-2022 data. It predicts how big moves are, not which way they go.', u: 'tree/main/vol-forecast-atr-blend' },
+  { n: 'Time-series trend', k: 'dark', v: 'FAIL', h: .52, roof: 'step',
+    t: 'A breakout ensemble on the 30 most liquid perps, judged once on 2022-2023. Net -18.5%, and still -14.7% at base cost: no edge, not an edge eaten by costs.', u: 'tree/main/ts-trend-study' },
+  { n: 'Life After Liquidation', k: 'lit', v: 'DESCRIPTIVE', h: .70, roof: 'antenna',
+    t: '54,180 liquidated wallets against similar ones that were not. 52.4% were liquidated again within 30 days, against 17.1%. Most came back within a day, and most did not size up.', u: 'tree/main/life-after-liquidation' },
+  { n: 'Life After a Big Win', k: 'lit', v: 'DESCRIPTIVE', h: .60, roof: 'flat',
+    t: 'What wallets do after an unusually large win, with a companion piece on a mirror-image loss. 34.8% opened a new position within an hour, against 20.6% of similar wallets.', u: 'tree/main/life-after-big-win' },
+  { n: 'Serial Liquidators', k: 'lit', v: 'DESCRIPTIVE', h: .76, roof: 'step',
+    t: 'Every liquidation over six months. A third of liquidated wallets account for 75% of all liquidation days, and the top 1% for 76% of the position size.', u: 'tree/main/serial-liquidators' },
+  { n: 'After the Comeback', k: 'lit', v: 'DESCRIPTIVE', h: .66, roof: 'tank',
+    t: '35,335 wallets that traded again after a liquidation. Back within an hour: 72.6% liquidated again. Waited a week or more: 46.8%. The same coin went with more repeats; position size made no clear difference.', u: 'tree/main/after-the-comeback' },
+  { n: 'Whale Lab E2 v2', k: 'build', v: 'PROSPECTIVE', h: .80, roof: 'crane',
+    t: 'Plan frozen and tagged. A 30-day forward confirmation window that has not begun yet.', u: 'blob/main/docs/experiments.md' },
+  { n: 'OFI Engine', k: 'build', v: 'DEVELOPMENT', h: .58, roof: 'crane',
+    t: 'Depth-normalised order-flow imbalance. Measurement infrastructure, past its first gate. No result to report yet.', u: 'blob/main/docs/experiments.md' }
+];
+
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const BW = 5, GAP = 1, PAD = 2, H = 19, ROWS = H + 3; let COLS = 0, STARS = [], WIN = [];
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const pre = $('city');
+let sel = 12, hov = -1, tick = 0;
+
+function build() {
+  COLS = PAD * 2 + S.length * BW + (S.length - 1) * GAP;
+  const R0 = rng(42); STARS = [];
+  for (let i = 0; i < Math.round(COLS / 2); i++) STARS.push({ c: Math.floor(R0() * COLS), r: Math.floor(R0() * 9), p: Math.floor(R0() * 4) });
+  WIN = S.map((s, i) => { const R = rng(7919 * (i + 3)); const a = []; for (let k = 0; k < 40; k++) a.push(R() < (s.k === 'confirmed' ? .8 : .62)); return a; });
+  const cnt = k => S.filter(s => s.k === k).length;
+  $('st-n').textContent = S.length; $('st-on').textContent = cnt('lit') + cnt('confirmed'); $('st-off').textContent = cnt('dark'); $('st-wip').textContent = cnt('build');
+  $('dir').innerHTML = S.map((s, i) => '<li><button type="button"><span class="no">' + String(i + 1).padStart(2, '0') + '</span><span class="nm"></span></button></li>').join('');
+  document.querySelectorAll('#dir button').forEach((b, i) => {
+    const nm = b.querySelector('.nm'), sm = document.createElement('small'); nm.textContent = S[i].n; sm.textContent = S[i].v; nm.appendChild(sm);
+    b.addEventListener('click', () => show(i));
+  });
+  pre.setAttribute('aria-label', 'ASCII skyline of ' + S.length + ' studies. Use the street directory below to open each one.');
+  let last = -1; S.forEach((s, i) => { if (s.k === 'lit') last = i; });
+  show(last >= 0 ? last : 0);
+}
+const X0 = i => PAD + i * (BW + GAP);
+const HR = s => Math.round(s.h * 13) + 2;
+
+function frame() {
+  const g = []; for (let r = 0; r < ROWS; r++) { g.push([]); for (let c = 0; c < COLS; c++) g[r].push([' ', 'f']); }
+  const put = (r, c, str, cls) => { for (let k = 0; k < str.length; k++) if (r >= 0 && r < ROWS && c + k >= 0 && c + k < COLS && str[k] !== '\u0000') g[r][c + k] = [str[k], cls]; };
+  for (const s of STARS) { const ph = still ? 0 : (tick + s.p) % 4; put(s.r, s.c, ph === 3 ? '+' : ph === 2 ? ' ' : '.', ph === 3 ? 'd' : 'f'); }
+  put(0, COLS - 9, '.-.', 'd'); put(1, COLS - 10, '(', 'd'); put(2, COLS - 9, "'-'", 'd');
+
+  S.forEach((s, i) => {
+    const x = X0(i), hr = HR(s), top = H - hr, on = s.k === 'lit' || s.k === 'confirmed';
+    const wall = i === sel ? 's' : (i === hov ? 'u' : (s.k === 'dark' ? 'k' : 'd'));
+    const blink = still || tick % 2 === 0;
+    if (s.k === 'build') {
+      const solid = Math.round(hr * .45), ftop = H - solid;
+      for (let r = top; r < ftop; r++) put(r, x, (r - top) % 2 === 0 ? '+-+-+' : '| | |', wall);
+      put(ftop, x, '+---+', wall);
+      for (let r = ftop + 1; r < H; r++) { put(r, x, '|   |', wall); put(r, x + 1, WIN[i][r] && r % 2 ? '#' : ':', WIN[i][r] && r % 2 ? 'u' : 'f'); put(r, x + 3, ':', 'f'); }
+      put(top - 3, x, blink ? '*___.' : ' ___.', 'd'); if (blink) put(top - 3, x, '*', 'u');
+      put(top - 2, x, '|/  |', 'd'); put(top - 1, x, '|   #', 'd');
+    } else {
+      put(top, x, '.---.', wall);
+      for (let r = top + 1; r < H; r++) {
+        put(r, x, '|   |', wall);
+        for (const [dx, k] of [[1, r * 2], [3, r * 2 + 1]]) {
+          let lit = on && WIN[i][k % 40];
+          if (lit && !still && (tick * 7 + i * 13 + k * 5) % 23 === 0) lit = false;
+          put(r, x + dx, lit ? '#' : (on ? ':' : '.'), lit ? 'u' : 'f');
+        }
+      }
+      if (s.v === 'FAILED INTEGRITY') put(H - 1, x, '|!!!|', wall === 'k' ? 'd' : wall);
+      if (s.roof === 'antenna') { put(top - 2, x + 2, 'o', on ? 'u' : wall); put(top - 1, x + 2, '|', wall); }
+      if (s.roof === 'tank') put(top - 1, x + 1, '[_]', wall);
+      if (s.roof === 'step') put(top - 1, x + 1, '.-.', wall);
+      if (s.roof === 'beacon') { put(top - 3, x, ' \\|/ ', 'd'); put(top - 2, x, '-- --', 'd'); put(top - 2, x + 2, blink ? '*' : 'o', 'u'); put(top - 1, x + 2, '|', wall); }
+    }
+    put(H + 1, x + 1, String(i + 1).padStart(2, '0'), i === sel ? 's' : 'd');
+    if (i === sel) put(H + 2, x + 1, '^^', 's');
+  });
+  for (let c = 0; c < COLS; c++) g[H][c] = ['=', 'd'];
+
+  const esc = ch => ch === '<' ? '&lt;' : ch === '&' ? '&amp;' : ch === '>' ? '&gt;' : ch;
+  pre.innerHTML = g.map(row => { let out = '', cur = null, buf = '';
+    for (const [ch, cls] of row) { if (cls !== cur) { if (buf) out += cur === 'f' ? buf : '<span class="' + cur + '">' + buf + '</span>'; cur = cls; buf = ''; } buf += esc(ch); }
+    return out + (cur === 'f' ? buf : '<span class="' + cur + '">' + buf + '</span>'); }).join('\n');
+}
+
+function show(i) {
+  sel = (i + S.length) % S.length; const s = S[sel], no = String(sel + 1).padStart(2, '0');
+  $('plate').textContent = 'No. ' + no + ' of ' + S.length + ' / ' + KIND[s.k];
+  $('name').textContent = s.n; $('line').textContent = s.t; $('chip').textContent = s.v;
+  $('barsel').innerHTML = '&gt; ' + no + ' <b></b> [' + s.v + ']'; $('barsel').querySelector('b').textContent = s.n;
+  $('link').href = REPO + s.u;
+  $('link').firstChild.textContent = s.k === 'build' ? 'Read the plan notes ' : 'Read the write-up ';
+  document.querySelectorAll('#dir button').forEach((b, k) => b.setAttribute('aria-current', k === sel ? 'true' : 'false'));
+  frame();
+  const sc = pre.parentElement;
+  if (sc.scrollWidth > sc.clientWidth) {
+    const to = Math.max(0, (X0(sel) + BW / 2) / COLS * pre.getBoundingClientRect().width - sc.clientWidth / 2);
+    try { sc.scrollTo({ left: to, behavior: still ? 'auto' : 'smooth' }); } catch (e) { sc.scrollLeft = to; }
+  }
+}
+function hit(e) {
+  const r = pre.getBoundingClientRect(), col = Math.floor((e.clientX - r.left) / (r.width / COLS)) - PAD;
+  if (col < 0) return -1; const i = Math.floor(col / (BW + GAP));
+  return i < S.length && col % (BW + GAP) < BW ? i : -1;
+}
+pre.addEventListener('pointermove', e => { const h = hit(e); if (h !== hov) { hov = h; frame(); } });
+pre.addEventListener('pointerleave', () => { if (hov !== -1) { hov = -1; frame(); } });
+pre.addEventListener('click', e => { const h = hit(e); if (h >= 0) show(h); });
+$('prev').addEventListener('click', () => show(sel - 1));
+$('next').addEventListener('click', () => show(sel + 1));
+
+build();
+if (!still) setInterval(() => { tick++; frame(); }, 800);
+
+/* ---- live read: the verdicts come from the "Selected research" table in the repo README ---- */
+const KNOWN = [/basis/i, /funding unwind/i, /whale lab e2 \(v1\.1\)/i, /kronos/i, /uniswap/i, /funding gap/i, /momentum/i, /volatility forecast/i,
+               /trend/i, /life after liquidation/i, /big win/i, /serial/i, /comeback/i, /whale lab e2 \(v2\)/i, /ofi/i];
+const SNAP = S.slice();
+function kindOf(v) {
+  if (/CONFIRMED/.test(v)) return 'confirmed';
+  if (/DESCRIPTIVE/.test(v)) return 'lit';
+  if (/PROSPECTIVE|DEVELOPMENT|PROGRESS|RUNNING/.test(v)) return 'build';
+  return 'dark';
+}
+function hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function parse(md) {
+  const at = md.indexOf('## Selected research'); if (at < 0) return null;
+  const out = [];
+  for (const line of md.slice(at).split('\n').slice(1)) {
+    if (/^## /.test(line)) break;
+    if (!/^\|/.test(line) || /^\|\s*-/.test(line) || /^\|\s*study\s*\|/i.test(line)) continue;
+    const cells = line.split('|').slice(1, -1).map(c => c.trim()); if (cells.length < 3) continue;
+    const name = cells[0].replace(/[*`]/g, ''), v = cells[cells.length - 1].replace(/\*/g, '').trim(), res = cells.slice(1, -1).join(' | ');
+    if (!name || !v) continue;
+    const k = KNOWN.findIndex(r => r.test(name)), base = k >= 0 ? SNAP[k] : null, kind = kindOf(v);
+    let u = base ? base.u : 'blob/main/docs/experiments.md';
+    const m = res.match(/\]\(([^)]+)\)/);
+    if (m && !/^https?:/.test(m[1])) u = 'tree/main/' + m[1].replace(/^\.?\//, '').replace(/\/$/, '');
+    let t = base && base.v === v ? base.t : res.replace(/See \[[^\]]*\]\([^)]*\)\.?/g, '').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*`]/g, '').replace(/\s+/g, ' ').trim();
+    if (t.length > 300) { const cut = t.slice(0, 300), dot = cut.lastIndexOf('. '); t = (dot > 120 ? cut.slice(0, dot + 1) : cut.replace(/\s+\S*$/, '') + ' ...'); }
+    const hsh = hash(name), roofs = kind === 'build' ? ['crane'] : kind === 'confirmed' ? ['beacon'] : ['flat', 'tank', 'step', 'antenna'];
+    out.push({ n: base ? base.n : name, k: kind, v: v, t: t || 'No summary in the README yet.', u: u,
+               h: kind === 'confirmed' ? .88 : base ? base.h : .34 + (hsh % 45) / 100,
+               roof: base && base.k === kind ? base.roof : roofs[hsh % roofs.length] });
+  }
+  return out.length >= 5 ? out : null;
+}
+const stamp = (txt, b) => { const el = $('src'); el.textContent = txt + ' '; const e = document.createElement('b'); e.textContent = b; el.appendChild(e); };
+fetch('https://raw.githubusercontent.com/viter999/quant-market-research/main/README.md', { cache: 'no-store' })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(md => { const live = parse(md); if (!live) throw new Error('table not found'); S = live; build();
+    const d = new Date(); stamp('live from GitHub, read', String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')); })
+  .catch(() => stamp('GitHub not reachable, showing the record of', '15 Nov 2026'));
+</script>
+</body>
+</html>

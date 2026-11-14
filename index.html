@@ -61,6 +61,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline
 .nav a:hover { color: var(--paper); text-decoration: underline; }
 .nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
 .nav a[aria-current="page"]::before { content: "> "; }
+.top { display: flex; flex-direction: column; gap: 12px; }
+.who { font-family: var(--small); font-size: 0.82rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts { font-family: var(--small); font-size: 0.78rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts b { color: var(--paper); font-weight: 500; }
 .next { display: flex; justify-content: flex-end; }
 .next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
   border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
@@ -162,9 +166,12 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
 
 
 <div class="wrap">
-  <div class="status" aria-label="Terminal status">
-    <nav class="nav" aria-label="Site"><a href="./" aria-current="page">OI&middot;VOL_TERMINAL</a><a href="museum/">MUSEUM_OF_FAILURE</a><a href="city/">NULL_CITY</a></nav>
-    <span><span class="live">LIVE</span> &nbsp;<b>190</b> mkts &nbsp;<b>7</b> venues &nbsp;15m buckets</span>
+  <div class="top">
+    <div class="status" aria-label="Terminal status">
+      <nav class="nav" aria-label="Site"><a href="./" aria-current="page">OI&middot;VOL_TERMINAL</a><a href="museum/">MUSEUM_OF_FAILURE</a><a href="city/">NULL_CITY</a></nav>
+      <span><span class="live">LIVE</span> &nbsp;<b>190</b> mkts &nbsp;<b>7</b> venues &nbsp;15m buckets</span>
+    </div>
+    <p class="who">Independent crypto market research by Natthaphong (Shawn) Suebsri. I build market-data tools, test trading ideas with the rules written first, and publish the results, including the failures.</p>
   </div>
 
   <header class="hero">
@@ -231,6 +238,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
       <p>So the terminal informs and never decides. I build tools that show what is happening in the market. I don't sell trading signals or promise returns.</p>
       <p>Since November 2026 I also publish descriptive studies of how traders behave on Hyperliquid. Four so far, built on every liquidation over six months: 177,432 wallets. They describe what traders do. They are not signals either.</p>
       <p class="stat">tests pre-registered <b>38</b> &nbsp;/&nbsp; results published <b>38</b> &nbsp;/&nbsp; behaviour studies <b>4</b> &nbsp;/&nbsp; signals sold <b>0</b></p>
+      <p class="counts">Three counts, three different things. <b>38</b>: trading tests written down in advance and run once. <b>17</b>: dead ideas with a label in the museum. <b>15</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
     </div>
     <p class="muted">Research write-ups and null results: <a href="https://github.com/viter999/quant-market-research" rel="noopener" target="_blank">quant-market-research</a> and <a href="https://github.com/viter999/crypto-signal-null-results" rel="noopener" target="_blank">crypto-signal-null-results</a> on GitHub.</p>
   </section>

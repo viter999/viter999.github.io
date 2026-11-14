@@ -56,6 +56,10 @@ a:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
 .nav a:hover { color: var(--paper); text-decoration: underline; }
 .nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
 .nav a[aria-current="page"]::before { content: "> "; }
+.top { display: flex; flex-direction: column; gap: 12px; }
+.who { font-family: var(--small); font-size: 0.82rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts { font-family: var(--small); font-size: 0.78rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts b { color: var(--paper); font-weight: 500; }
 .next { display: flex; justify-content: flex-end; }
 .next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
   border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
@@ -146,9 +150,12 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
 
 
 <div class="wrap">
-  <div class="status" aria-label="Museum status">
-    <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="./" aria-current="page">MUSEUM_OF_FAILURE</a><a href="../city/">NULL_CITY</a></nav>
-    <span><span class="open">OPEN</span> &nbsp;<b>17</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
+  <div class="top">
+    <div class="status" aria-label="Museum status">
+      <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="./" aria-current="page">MUSEUM_OF_FAILURE</a><a href="../city/">NULL_CITY</a></nav>
+      <span><span class="open">OPEN</span> &nbsp;<b>17</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
+    </div>
+    <p class="who">Independent crypto market research by Natthaphong (Shawn) Suebsri. I build market-data tools, test trading ideas with the rules written first, and publish the results, including the failures.</p>
   </div>
 
   <header class="hero">
@@ -161,6 +168,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
         <span class="chip"><b>1</b> survivor</span>
         <span class="chip">admission <b>free</b></span>
       </div>
+      <p class="counts">Three counts, three different things. <b>38</b>: trading tests written down in advance and run once. <b>17</b>: dead ideas with a label in the museum. <b>15</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
     </div>
 <pre class="ascii" aria-hidden="true">     ___________
     /           \

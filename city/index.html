@@ -55,6 +55,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--paper); outline
 .nav a:hover { color: var(--paper); text-decoration: underline; }
 .nav a[aria-current="page"] { color: var(--paper); font-weight: 500; }
 .nav a[aria-current="page"]::before { content: "> "; }
+.top { display: flex; flex-direction: column; gap: 12px; }
+.who { font-family: var(--small); font-size: 0.82rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts { font-family: var(--small); font-size: 0.78rem; line-height: 1.6; color: var(--dim); max-width: 78ch; }
+.counts b { color: var(--paper); font-weight: 500; }
 .next { display: flex; justify-content: flex-end; }
 .next a { font-family: var(--type); font-size: 1.05rem; color: var(--paper); text-decoration: none; border: var(--dash);
   border-radius: 10px; padding: 12px 18px; display: inline-flex; gap: 28px; align-items: center; }
@@ -135,9 +139,12 @@ footer span { max-width: 62ch; }
 </head>
 <body>
 <div class="wrap">
-  <div class="status">
-    <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="../museum/">MUSEUM_OF_FAILURE</a><a href="./" aria-current="page">NULL_CITY</a></nav>
-    <span><span class="live" id="mode">LIVE</span> &nbsp;<b id="st-n">15</b> studies &nbsp;<b id="st-on">5</b> lit &nbsp;<b id="st-off">8</b> dark &nbsp;<b id="st-wip">2</b> building &nbsp;<span id="src">read <b>--:--</b></span></span>
+  <div class="top">
+    <div class="status">
+      <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="../museum/">MUSEUM_OF_FAILURE</a><a href="./" aria-current="page">NULL_CITY</a></nav>
+      <span><span class="live" id="mode">LIVE</span> &nbsp;<b id="st-n">15</b> studies &nbsp;<b id="st-on">4</b> lit &nbsp;<b id="st-ok">1</b> confirmed &nbsp;<b id="st-off">8</b> dark &nbsp;<b id="st-wip">2</b> building &nbsp;<span id="src">read <b>--:--</b></span></span>
+    </div>
+    <p class="who">Independent crypto market research by Natthaphong (Shawn) Suebsri. I build market-data tools, test trading ideas with the rules written first, and publish the results, including the failures.</p>
   </div>
 
   <div class="hero">
@@ -145,9 +152,11 @@ footer span { max-width: 62ch; }
       <span class="tag">RESEARCH RECORD</span>
       <h1>Null City</h1>
       <p class="lede">Every study I registered before testing it, as one street at night. <b>Lights on</b> means it was published with a result worth reading. <b>Dark</b> means the idea was tested and killed. Most of the street is dark, and that is the honest state of the work.</p>
+      <p class="counts">Three counts, three different things. <b>38</b>: trading tests written down in advance and run once. <b>17</b>: dead ideas with a label in the museum. <b>15</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
     </div>
 <pre class="legend" aria-label="Legend"><b>|# #|</b>  lights on: published
-<b>--*--</b>  beacon: confirmed
+<b>--*--</b>  beacon: confirmed forecast,
+       not a trading edge
 |. .|  dark: killed or null
 +-+-+  under construction</pre>
   </div>
@@ -192,7 +201,7 @@ footer span { max-width: 62ch; }
 
 <script>
 const REPO = 'https://github.com/viter999/quant-market-research/';
-const KIND = { lit: 'Lights on', confirmed: 'Beacon', dark: 'Dark', build: 'Under construction' };
+const KIND = { lit: 'Lights on', confirmed: 'Beacon: confirmed forecast, not a trading edge', dark: 'Dark', build: 'Under construction' };
 let S = [
   { n: 'Perp-spot basis dislocation', k: 'dark', v: 'NULL', h: .50, roof: 'flat',
     t: 'A small directional effect showed up in validation (+3.78 bps), shrank in the frozen holdout (+1.23 bps, interval touching zero), and stayed far under the 58 bps round-trip cost. The stopping rule fired and closed the whole family of ideas.', u: 'tree/main/research/basis-dislocation' },
@@ -239,7 +248,7 @@ function build() {
   for (let i = 0; i < Math.round(COLS / 2); i++) STARS.push({ c: Math.floor(R0() * COLS), r: Math.floor(R0() * 9), p: Math.floor(R0() * 4) });
   WIN = S.map((s, i) => { const R = rng(7919 * (i + 3)); const a = []; for (let k = 0; k < 40; k++) a.push(R() < (s.k === 'confirmed' ? .8 : .62)); return a; });
   const cnt = k => S.filter(s => s.k === k).length;
-  $('st-n').textContent = S.length; $('st-on').textContent = cnt('lit') + cnt('confirmed'); $('st-off').textContent = cnt('dark'); $('st-wip').textContent = cnt('build');
+  $('st-n').textContent = S.length; $('st-on').textContent = cnt('lit'); $('st-ok').textContent = cnt('confirmed'); $('st-off').textContent = cnt('dark'); $('st-wip').textContent = cnt('build');
   $('dir').innerHTML = S.map((s, i) => '<li><button type="button"><span class="no">' + String(i + 1).padStart(2, '0') + '</span><span class="nm"></span></button></li>').join('');
   document.querySelectorAll('#dir button').forEach((b, i) => {
     const nm = b.querySelector('.nm'), sm = document.createElement('small'); nm.textContent = S[i].n; sm.textContent = S[i].v; nm.appendChild(sm);

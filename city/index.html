@@ -142,7 +142,7 @@ footer span { max-width: 62ch; }
   <div class="top">
     <div class="status">
       <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="../museum/">MUSEUM_OF_FAILURE</a><a href="./" aria-current="page">NULL_CITY</a></nav>
-      <span><span class="live" id="mode">LIVE</span> &nbsp;<b id="st-n">15</b> studies &nbsp;<b id="st-on">4</b> lit &nbsp;<b id="st-ok">1</b> confirmed &nbsp;<b id="st-off">8</b> dark &nbsp;<b id="st-wip">2</b> building &nbsp;<span id="src">read <b>--:--</b></span></span>
+      <span><span class="live" id="mode">LIVE</span> &nbsp;<b id="st-n">16</b> studies &nbsp;<b id="st-on">4</b> lit &nbsp;<b id="st-ok">1</b> confirmed &nbsp;<b id="st-off">8</b> dark &nbsp;<b id="st-wip">2</b> building &nbsp;<span id="src">read <b>--:--</b></span></span>
     </div>
     <p class="who">Independent crypto market research by Natthaphong (Shawn) Suebsri. I build market-data tools, test trading ideas with the rules written first, and publish the results, including the failures.</p>
   </div>
@@ -152,7 +152,7 @@ footer span { max-width: 62ch; }
       <span class="tag">RESEARCH RECORD</span>
       <h1>Null City</h1>
       <p class="lede">Every study I registered before testing it, as one street at night. <b>Lights on</b> means it was published with a result worth reading. <b>Dark</b> means the idea was tested and killed. Most of the street is dark, and that is the honest state of the work.</p>
-      <p class="counts">Three counts, three different things. <b>38</b>: trading ideas tested and logged in my trials ledger. <b>17</b>: dead ideas with a label in the museum. <b>15</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
+      <p class="counts">Three counts, three different things. <b>39</b>: trading ideas tested and logged in my trials ledger. <b>17</b>: dead ideas with a label in the museum. <b>16</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
     </div>
 <pre class="legend" aria-label="Legend"><b>|# #|</b>  lights on: published
 <b>--*--</b>  beacon: confirmed forecast,
@@ -165,7 +165,7 @@ footer span { max-width: 62ch; }
     <div class="band">
       <div class="window">
         <div class="bar"><span>null-city.txt</span><span id="barsel"></span></div>
-        <div class="scroll"><pre id="city" role="img" aria-label="ASCII skyline of 15 studies. Use the street directory below to open each one."></pre></div>
+        <div class="scroll"><pre id="city" role="img" aria-label="ASCII skyline of 16 studies. Use the street directory below to open each one."></pre></div>
       </div>
     </div>
     <figcaption>Tap a building to open it. Heights are only for the skyline; the windows carry the meaning. The verdicts are read from the research repo on GitHub each time this page loads.</figcaption>
@@ -229,6 +229,8 @@ let S = [
     t: 'Every liquidation over six months. A third of liquidated wallets account for 75% of all liquidation days, and the top 1% for 76% of the position size.', u: 'tree/main/serial-liquidators' },
   { n: 'After the Comeback', k: 'lit', v: 'DESCRIPTIVE', h: .66, roof: 'tank',
     t: '35,335 wallets that traded again after a liquidation. Back within an hour: 72.6% liquidated again. Waited a week or more: 46.8%. The same coin went with more repeats; position size made no clear difference.', u: 'tree/main/after-the-comeback' },
+  { n: 'Fade the Comeback', k: 'dark', v: 'FAIL', h: .48, roof: 'antenna',
+    t: 'Trading against just-liquidated wallets that rush back into a coin. 515 trades: +0.026% before costs, 50.3% win rate, -0.374% after 0.40% costs. Their comeback side did not predict the next 4 hours.', u: 'tree/main/fade-the-comeback' },
   { n: 'Whale Lab E2 v2', k: 'build', v: 'PROSPECTIVE', h: .80, roof: 'crane',
     t: 'Plan frozen and tagged. A 30-day forward confirmation window that has not begun yet.', u: 'blob/main/docs/experiments.md' },
   { n: 'OFI Engine', k: 'build', v: 'DEVELOPMENT', h: .58, roof: 'crane',
@@ -336,7 +338,7 @@ if (!still) setInterval(() => { tick++; frame(); }, 800);
 
 /* ---- live read: the verdicts come from the "Selected research" table in the repo README ---- */
 const KNOWN = [/basis/i, /funding unwind/i, /whale lab e2 \(v1\.1\)/i, /kronos/i, /uniswap/i, /funding gap/i, /momentum/i, /volatility forecast/i,
-               /trend/i, /life after liquidation/i, /big win/i, /serial/i, /comeback/i, /whale lab e2 \(v2\)/i, /ofi/i];
+               /trend/i, /life after liquidation/i, /big win/i, /serial/i, /after the comeback/i, /fade the comeback/i, /whale lab e2 \(v2\)/i, /ofi/i];
 const SNAP = S.slice();
 function kindOf(v) {
   if (/CONFIRMED/.test(v)) return 'confirmed';
@@ -372,7 +374,7 @@ fetch('https://raw.githubusercontent.com/viter999/quant-market-research/main/REA
   .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
   .then(md => { const live = parse(md); if (!live) throw new Error('table not found'); S = live; build();
     const d = new Date(); stamp('read', String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')); })
-  .catch(() => { $('mode').textContent = 'SNAPSHOT'; stamp('GitHub not reachable, record of', '15 Nov 2026'); });
+  .catch(() => { $('mode').textContent = 'SNAPSHOT'; stamp('GitHub not reachable, record of', '16 Nov 2026'); });
 </script>
 </body>
 </html>

@@ -153,7 +153,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
   <div class="top">
     <div class="status" aria-label="Museum status">
       <nav class="nav" aria-label="Site"><a href="../">OI&middot;VOL_TERMINAL</a><a href="./" aria-current="page">MUSEUM_OF_FAILURE</a><a href="../city/">NULL_CITY</a></nav>
-      <span><span class="open">OPEN</span> &nbsp;<b>17</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
+      <span><span class="open">OPEN</span> &nbsp;<b>19</b> exhibits &nbsp;<b>1</b> survivor &nbsp;<b>0</b> edges</span>
     </div>
     <p class="who">Independent crypto market research by Natthaphong (Shawn) Suebsri. I build market-data tools, test trading ideas with the rules written first, and publish the results, including the failures.</p>
   </div>
@@ -164,11 +164,11 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
       <h1>Welcome to the Museum of Failure</h1>
       <p class="lede">Every exhibit is a market idea I believed in and then tested. The big ones had their <b>rules written down and frozen before I saw the data</b>, then got one honest look. Most of them died. This is where they are kept, with the cause of death on the label.</p>
       <div class="chips">
-        <span class="chip"><b>17</b> exhibits</span>
+        <span class="chip"><b>19</b> exhibits</span>
         <span class="chip"><b>1</b> survivor</span>
         <span class="chip">admission <b>free</b></span>
       </div>
-      <p class="counts">Three counts, three different things. <b>39</b>: trading ideas tested and logged in my trials ledger. <b>17</b>: dead ideas with a label in the museum. <b>17</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
+      <p class="counts">Three counts, three different things. <b>98</b>: trading ideas tested and logged in my trials ledger. <b>19</b>: dead ideas with a label in the museum. <b>19</b>: entries in the public research repo, finished write-ups plus work in progress, including 4 behaviour studies that are not trading tests.</p>
     </div>
 <pre class="ascii" aria-hidden="true">     ___________
     /           \
@@ -186,7 +186,7 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
   </header>
 
   <nav class="plan" aria-label="Floor plan">
-    <a href="#hall-1"><span class="h">Hall I</span><span class="n">Published autopsies</span><span class="c">8 exhibits, full reports public</span></a>
+    <a href="#hall-1"><span class="h">Hall I</span><span class="n">Published autopsies</span><span class="c">10 exhibits, full reports public</span></a>
     <a href="#hall-2"><span class="h">Hall II</span><span class="n">Recent deaths</span><span class="c">9 exhibits from the lab notebook</span></a>
     <a href="#survivor"><span class="h">Hall III</span><span class="n">The survivor</span><span class="c">the one test that passed</span></a>
   </nav>
@@ -250,6 +250,20 @@ footer { font-family: var(--small); font-size: 0.78rem; color: var(--dim); borde
   <p class="medium">Uniswap v3 ETH/USDC · 48 price shocks</p>
   <dl><dt>The idea</dt><dd>After a big ETH price swing, low-fee pools and L2 chains refill their liquidity 1.5× faster.</dd><dt>Rule set before the data</dt><dd>Median recovery at least 1.5× faster, p below 0.05.</dd><dt>Cause of death</dt><dd>Fee tier and Arbitrum: a 1.5× speed-up <b>ruled out</b>. Base: inconclusive.</dd></dl>
   <a class="go" href="https://github.com/viter999/quant-market-research/tree/main/uniswap-liquidity-pilot" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.18</span><span>died 26 Nov 2026</span><span class="verdict">FAIL</span></div>
+  <h3>The Open Interest Jump</h3>
+  <p class="medium">Top-10% 1h OI jump · Binance perps · 2024</p>
+  <dl><dt>The idea</dt><dd>When a coin's open interest jumps in one hour, new money is arriving, so go long with a −2% stop and a +2.4% target.</dd><dt>Rule set before the data</dt><dd>Win more than 45.5% of trades and a mean per trade above zero, CI included.</dd><dt>Cause of death</dt><dd>67,874 trades won <b>41.6%</b>, mean <b>−0.10%</b>. Random entries with the same exits did about the same.</dd></dl>
+  <p class="after">A BTC trend filter did not help. A live paper test of the same rules is still running.</p><a class="go" href="https://github.com/viter999/quant-market-research/tree/main/oi-jump-long" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
+</article>
+<article class="tile">
+  <div class="meta"><span class="acc">QT.2026.19</span><span>died 27 Nov 2026</span><span class="verdict">FAIL</span></div>
+  <h3>Fifty Ideas, No Timing</h3>
+  <p class="medium">50 long ideas + 5 time-of-day ideas · Binance perps · 2024–2025</p>
+  <dl><dt>The idea</dt><dd>At least one of 50 simple long ideas picks better entry times than chance, with the same exits.</dd><dt>Rule set before the data</dt><dd>Beat the same coin later and all other coins at the same moment on 2024, then again on 2025.</dd><dt>Cause of death</dt><dd>The first screener's <b>13 winners</b> were a flaw in its baseline. The fixed one passed 2 ideas; <b>both failed on 2025</b>.</dd></dl>
+  <p class="after">All five time-of-day ideas failed too.</p><a class="go" href="https://github.com/viter999/quant-market-research/tree/main/random-entry-screener" target="_blank" rel="noopener">READ THE AUTOPSY &gt;</a>
 </article>
     </div>
   </section>
